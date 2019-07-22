@@ -3,10 +3,14 @@ import json
 import sqlite3
 
 # Twitter API
-twitter_api_key = "xxxx"
-twitter_api_secret = "xxxx"
-twitter_acces_token = "xxxx"
-twitter_acces_secret = "xxxx"
+# twitter_api_key = "xxxx"
+# twitter_api_secret = "xxxx"
+# twitter_acces_token = "xxxx"
+# twitter_acces_secret = "xxxx"
+
+# import tokens from api_tokens.py file
+from api_tokens import *
+
 
 auth = tweepy.OAuthHandler(twitter_api_key, twitter_api_secret)
 auth.set_access_token(twitter_acces_token, twitter_acces_secret)
