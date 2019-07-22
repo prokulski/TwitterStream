@@ -49,6 +49,28 @@ wordcloud(words_f$word, words_f$n,
 
 
 
+# word cloud - bigrams
+biwords <- tweets %>%
+  mutate(tweetText = str_replace_all(tweetText, "@\\w+|http|https|t.co", " ")) %>%
+  unnest_tokens("word", tweetText, token = "ngrams", n = 2) %>%
+  count(word, sort = TRUE) %>%
+  filter(!is.na(word)) %>%
+  separate(word, into = c("word1", "word2")) %>%
+  filter(!word1 %in% pl_stop_words, !word2 %in% pl_stop_words) %>%
+  filter(str_length(word1) > 2 | str_length(word2) > 2) %>%
+  unite("word", c("word1", "word2"), sep = " ")
+
+
+
+biwords_f <- biwords %>% filter(n > 1)
+
+wordcloud(biwords_f$word, biwords_f$n,
+          max.words = 200,
+          scale = c(1.8, 0.6),
+          colors = rev(RColorBrewer::brewer.pal(9, "OrRd")[4:5]))
+
+
+
 # how many tweets per minute?
 tweets %>%
   mutate(time = floor_date(datetime, unit = "minute")) %>%
