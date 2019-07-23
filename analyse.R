@@ -29,7 +29,15 @@ tweets
 
 # who tweets most?
 tweets %>%
-  count(user, sort = TRUE)
+  count(user, sort = TRUE) %>%
+  top_n(20, n) %>%
+  arrange(n) %>%
+  mutate(user = fct_inorder(user)) %>%
+  ggplot() +
+  geom_col(aes(user, n), fill = "lightblue", color = "gray30") +
+  coord_flip() +
+  theme_minimal()
+
 
 
 # word cloud
@@ -43,9 +51,9 @@ words <- tweets %>%
 words_f <- words %>% filter(n > 1)
 
 wordcloud(words_f$word, words_f$n,
-          max.words = 200,
+          max.words = 100,
           scale = c(1.8, 0.6),
-          colors = rev(RColorBrewer::brewer.pal(9, "OrRd")[4:5]))
+          colors = RColorBrewer::brewer.pal(9, "OrRd")[4:5])
 
 
 
@@ -65,9 +73,9 @@ biwords <- tweets %>%
 biwords_f <- biwords %>% filter(n > 1)
 
 wordcloud(biwords_f$word, biwords_f$n,
-          max.words = 200,
+          max.words = 100,
           scale = c(1.8, 0.6),
-          colors = rev(RColorBrewer::brewer.pal(9, "OrRd")[4:5]))
+          colors = RColorBrewer::brewer.pal(9, "OrRd")[4:5])
 
 
 
