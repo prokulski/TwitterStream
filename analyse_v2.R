@@ -25,18 +25,23 @@ dbDisconnect(conn)
 
 
 # data table is ready
-
+summary(tweets)
 
 
 
 # who tweets most?
 tweets %>%
-  count(user_screen_name, sort = TRUE) %>%
-  top_n(20, n) %>%
-  arrange(n) %>%
+  mutate(answer_tweet = in_reply_to_user_id != "None") %>%
+  count(user_screen_name, answer_tweet, sort = TRUE) %>%
+  group_by(user_screen_name) %>%
+  mutate(nn = sum(n)) %>%
+  ungroup() %>%
+  top_n(40, nn) %>%
+  arrange(nn) %>%
   mutate(user_screen_name = fct_inorder(user_screen_name)) %>%
   ggplot() +
-  geom_col(aes(user_screen_name, n), fill = "lightblue", color = "gray30") +
+  geom_col(aes(user_screen_name, y = if_else(answer_tweet, n, -n),
+               fill = answer_tweet),  color = "gray30") +
   coord_flip() +
   theme_minimal()
 
