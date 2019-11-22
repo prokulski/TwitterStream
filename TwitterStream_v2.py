@@ -46,7 +46,8 @@ users_names = []
 class TweetStreamListener(tweepy.StreamListener):
 
     # When data is received
-    def on_data(self, data):
+    @staticmethod
+    def on_data(data):
 
         # Error handling because teachers say to do this
         try:
@@ -56,8 +57,7 @@ class TweetStreamListener(tweepy.StreamListener):
 
             # only tweets from list members
             # and without RTs
-            if (tweet['user']['screen_name'] in users_names and
-                    'RT @' not in tweet['text']):
+            if (tweet['user']['screen_name'] in users_names and 'RT @' not in tweet['text']):
 
                 # print elements:
                 print('user_screen_name  : ' + tweet['user']['screen_name'])
@@ -68,19 +68,15 @@ class TweetStreamListener(tweepy.StreamListener):
 
                 if tweet['truncated'] == True:
                     tw_text = tweet['extended_tweet']['full_text']
-                    print('full_text         : ' +
-                          tweet['extended_tweet']['full_text'])
+                    print('full_text         : ' + tweet['extended_tweet']['full_text'])
                 else:
                     tw_text = tweet['text']
                     print('text              : ' + tweet['text'])
 
-                print('is_quote_status   : ' +
-                      str(tweet['is_quote_status']))
+                print('is_quote_status   : ' + str(tweet['is_quote_status']))
 
-                print('in_reply_to_status_id : ' +
-                      str(tweet['in_reply_to_status_id']))
-                print('in_reply_to_user_id   : ' +
-                      str(tweet['in_reply_to_user_id']))
+                print('in_reply_to_status_id : ' + str(tweet['in_reply_to_status_id']))
+                print('in_reply_to_user_id   : ' + str(tweet['in_reply_to_user_id']))
 
                 if tweet['is_quote_status'] == True:
                     print('quoted_status_permalink_expanded')

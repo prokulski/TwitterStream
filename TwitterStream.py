@@ -23,7 +23,7 @@ c = conn.cursor()
 
 
 # Class for defining a Tweet
-class Tweet():
+class Tweet:
 
     # Data on the tweet
     def __init__(self, text, user, date):
@@ -34,8 +34,7 @@ class Tweet():
     # Inserting that data into the DB
     def insertTweet(self):
 
-        c.execute("INSERT INTO tweets (tweetText, user, date) VALUES (?, ?, ?)",
-            (self.text, self.user, self.date))
+        c.execute("INSERT INTO tweets (tweetText, user, date) VALUES (?, ?, ?)", (self.text, self.user, self.date))
         conn.commit()
 
         print(self.user + ' @ ' + self.date + ': \n' + self.text + '\n')
