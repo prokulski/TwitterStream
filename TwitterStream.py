@@ -1,6 +1,10 @@
-import tweepy
 import json
 import sqlite3
+
+import tweepy
+
+# import tokens from api_tokens.py file
+from api_tokens import *
 
 # Twitter API
 # twitter_api_key = "xxxx"
@@ -8,17 +12,13 @@ import sqlite3
 # twitter_acces_token = "xxxx"
 # twitter_acces_secret = "xxxx"
 
-# import tokens from api_tokens.py file
-from api_tokens import *
-
-
 auth = tweepy.OAuthHandler(twitter_api_key, twitter_api_secret)
 auth.set_access_token(twitter_acces_token, twitter_acces_secret)
 
-api = tweepy.API(auth, wait_on_rate_limit = True)
+api = tweepy.API(auth, wait_on_rate_limit=True)
 
 # DB stuff
-conn = sqlite3.connect('twitter.db')
+conn = sqlite3.connect('twitter.sqlite')
 c = conn.cursor()
 
 
@@ -33,7 +33,6 @@ class Tweet:
 
     # Inserting that data into the DB
     def insertTweet(self):
-
         c.execute("INSERT INTO tweets (tweetText, user, date) VALUES (?, ?, ?)", (self.text, self.user, self.date))
         conn.commit()
 
@@ -54,7 +53,6 @@ class TweetStreamListener(tweepy.StreamListener):
 
             # filter out retweets
             if not tweet['retweeted'] and 'RT @' not in tweet['text']:
-
                 # assign all data to Tweet object
                 tweet_data = Tweet(
                     str(tweet['text']),
@@ -73,7 +71,6 @@ class TweetStreamListener(tweepy.StreamListener):
         return True
 
 
-
 # Driver
 if __name__ == '__main__':
     # members of https://twitter.com/dziennikarz/lists/dziennikarze/members
@@ -82,7 +79,7 @@ if __name__ == '__main__':
     i = 1
 
     while True:
-        lista = api.list_members(slug="Dziennikarze", owner_screen_name="dziennikarz", cursor = cur)
+        lista = api.list_members(slug="Dziennikarze", owner_screen_name="dziennikarz", cursor=cur)
         for e in lista[0]:
             users.append(e.id_str)
 
@@ -92,7 +89,6 @@ if __name__ == '__main__':
         # last page?
         if cur == 0:
             break
-
 
     # add @lemur78
     users.append('66435928')

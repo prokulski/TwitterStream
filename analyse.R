@@ -2,14 +2,14 @@ library(tidyverse)
 library(lubridate)
 library(DBI)
 
-
 library(tidytext)
 library(wordcloud)
+library(dplyr)
 
 pl_stop_words <- read_lines("pl_stop_words.txt")
 
 # DB stuff
-conn <- dbConnect(RSQLite::SQLite(), "twitter.db")
+conn <- dbConnect(RSQLite::SQLite(), "twitter.sqlite")
 
 # load tweets
 tweets <- dbGetQuery(conn, "SELECT * FROM tweets") %>%
@@ -21,11 +21,8 @@ tweets <- dbGetQuery(conn, "SELECT * FROM tweets") %>%
 # close DB
 dbDisconnect(conn)
 
-
 # data table is ready
 tweets
-
-
 
 # who tweets most?
 tweets %>%
@@ -37,7 +34,6 @@ tweets %>%
   geom_col(aes(user, n), fill = "lightblue", color = "gray30") +
   coord_flip() +
   theme_minimal()
-
 
 
 # word cloud

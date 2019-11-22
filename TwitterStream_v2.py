@@ -1,16 +1,15 @@
-import tweepy
 import json
 import sqlite3
 
+import tweepy
+
 # import tokens from api_tokens.py file
 from api_tokens import *
-
 
 auth = tweepy.OAuthHandler(twitter_api_key, twitter_api_secret)
 auth.set_access_token(twitter_acces_token, twitter_acces_secret)
 
 api = tweepy.API(auth, wait_on_rate_limit=True)
-
 
 # DB stuff
 # connect to DB
@@ -36,7 +35,6 @@ c.execute('''
     ''')
 
 conn.commit()
-
 
 # place for list members
 users_names = []
